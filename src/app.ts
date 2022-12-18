@@ -1,8 +1,10 @@
 import express from "express";
 import { config } from "dotenv";
 import { join } from "path";
-import { connect } from "mongoose";
+import mongoose, { connect } from "mongoose";
+import { authRoutes } from "./routes";
 
+mongoose.set("strictQuery", false);
 config({ path: join(__dirname, "..", ".env") });
 
 const PORT = process.env.PORT || 3000;
@@ -10,6 +12,8 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use("/auth", authRoutes);
 
 app.post("/", (req, res) => {
   const { value } = req.body;
